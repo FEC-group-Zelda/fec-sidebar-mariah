@@ -1,20 +1,53 @@
 var express = require('express');
 var app = express();
 var Sequelize = require('sequelize');
+var AWS = require('aws-sdk');
 var cors = require('cors');
 var path = require('path');
-var PORT = 4444;
+var keys = require('./keys.js');
+var PORT = 4445;
 // import artist model methods
 var db = require('./db/index.js');
 
 
+AWS.config.update({
+  accessKeyId: keys.accessId,
+  secretAccessKey: keys.secretAccessId,
+  region: keys.region,
+});
+
+const s3 = new AWS.S3();
 // Require Middleware
-var bodyParser = require('body-parser');
 
 
 app.use(cors());
-// Middleware functionality goes here
-app.use('/', express.static(path.join(__dirname, '../client/dist')));
+
+// var getFile = function (res) {
+//   console.log('hey27')
+//   s3.getBucketWebsite({ Bucket: 'fecproxysidebar' }, function (err, data) {
+//     console.log('hey29')
+//     if (err) {
+//       console.log('hey31');
+//       var bodyParser = require('body-parser');
+//       console.log(err);
+//       return res.status(400);
+//     } else {
+//       console.log('hey 35');
+//       console.log(data)
+//       return res.send(data);
+//     }
+//   });
+// };
+
+// // Middleware functionality goes here
+// //app.use('/', express.static(path.join(__dirname, '../client/dist')));
+// app.get('/', function(req, res) {
+//   console.log('hey' + res)
+//   getFile(res);
+// });
+app.use('/', express.static('http://drku8jry1mb9d.cloudfront.net/'));
+/////// s3 function ///
+
 
 /////// GET/POST req here ////
 
